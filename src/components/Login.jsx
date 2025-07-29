@@ -1,12 +1,24 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { LOGIN_BG } from "../utils/constants"
 import Header from "./Header"
+import { checkValidData } from '../utils/validate'
 
 const Login = () => {
 
   const [isSignInForm, setIsSignInForm] = useState(true)
+  const [errorMmessage, setErrorMessage] = useState(null)
+
+  const email = useRef(null)
+  const password = useRef(null)
+
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm)
+  }
+
+  const handleButtonClick = () => {
+    // validate the form data
+    const message = checkValidData(email.current.value, password.current.value)
+    setErrorMessage(message)
   }
 
   return (
@@ -22,7 +34,7 @@ const Login = () => {
       <Header />
 
       {/* Login Form */}
-      <form className="absolute inset-0 flex items-center justify-center">
+      <form onSubmit={e => e.preventDefault()} className="absolute inset-0 flex items-center justify-center">
         <div className="bg-transparent border border-white backdrop-blur-md p-8 md:p-10 rounded-2xl w-[90%] max-w-md">
           <h2 className="text-3xl font-semibold text-white mb-6 text-center">
             {isSignInForm ? "Sign In" : "Sign Up"} to Cinesage
@@ -33,29 +45,34 @@ const Login = () => {
             placeholder="Enter Your Name"
             className="w-full p-3 mb-4 rounded-lg border border-white bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#ED0F48]"
           />
-          
-          <input
-            type="tel"
-            pattern="[0-9]{10}"
-            placeholder="Phone Number"
-            className="w-full p-3 mb-4 rounded-lg border border-white bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#ED0F48] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none appearance-none"
-          /></>}
+
+            <input
+              type="tel"
+              pattern="[0-9]{10}"
+              placeholder="Phone Number"
+              className="w-full p-3 mb-4 rounded-lg border border-white bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#ED0F48] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none appearance-none"
+            /></>}
 
           <input
             type="text"
+            ref={email}
             placeholder="Email Address"
             className="w-full p-3 mb-4 rounded-lg border border-white bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#ED0F48]"
           />
 
           <input
             type="password"
+            ref={password}
             placeholder="Password"
             className="w-full p-3 mb-6 rounded-lg border border-white bg-transparent text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-[#ED0F48]"
           />
 
+          <p className="text-pink-100 font-medium text-sm mt-2">{errorMmessage}</p>
+
           <button
             type="submit"
             className="cursor-pointer w-full bg-[#ED0F48] hover:bg-white hover:text-black transition duration-300 text-white font-semibold py-3 rounded-lg shadow-md"
+            onClick={handleButtonClick}
           >
             {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
