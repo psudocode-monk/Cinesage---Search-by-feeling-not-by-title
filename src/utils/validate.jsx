@@ -4,7 +4,7 @@ export const checkValidData = (email, password) => {
   const isPasswordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$.{8,}$/.test(password)
 
   if(!isEmailValid) return "Email ID not valid"
-  if(!isPasswordValid) return "Password should contain atleast one uppercase, special symbol & number"
+  if(!isPasswordValid) return "Password should contain atleast 8 characters & one uppercase, special symbol & number"
 
   return null
 }
